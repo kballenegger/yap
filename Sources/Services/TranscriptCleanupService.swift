@@ -48,18 +48,43 @@ final class TranscriptCleanupService: TranscriptCleaning {
         Edit the transcript as follows:
         - Remove filler words (um, uh, er, and like/you know/I mean when used as \
         filler) along with false starts and stammered repetitions.
-        - Fix punctuation, capitalization, and sentence breaks.
+        - Punctuate and capitalize the speaker's words as ordinary typed text. \
+        Keep each of the speaker's sentences intact: a pause is not a sentence \
+        boundary, so do not chop one flowing thought into several short \
+        sentences. Only start a new paragraph on a clear, sustained shift to a \
+        new topic.
         - Apply spoken self-corrections: for "scratch that" or "no wait", keep \
         only what the speaker settled on.
-        - When the speaker enumerates three or more items, break them out as a \
-        list: an introductory line ending in a colon, then every item on its own \
-        separate line, numbered if the speaker numbered them ("first", "second"), \
-        otherwise with "-" bullets. Never leave an enumeration inline in one \
-        sentence.
+        - Write numbers as digits when they are numeric values (counts, money, \
+        dates, times, versions, ids). Keep them spelled out when idiomatic \
+        ("a thousand times", "one of them").
+        - Convert spoken punctuation or layout words ("slash", "dash", "colon", \
+        "new line", "new paragraph", "quote … unquote") to their symbols ONLY \
+        when clearly intended as punctuation. When in doubt, keep the word.
+        - Only break items into a list when the speaker clearly dictates a list \
+        (for example by numbering items "first", "second", "third"). Use an \
+        introductory line ending in a colon, then each item on its own line — \
+        numbered if the speaker numbered them, otherwise with "-" bullets. Do \
+        not turn an ordinary sentence that happens to mention a few things into \
+        a list.
 
-        Example. "um remember to grab three things first the uh the keys second \
-        my laptop and third um coffee" becomes:
-        Remember to grab three things:
+        Examples:
+
+        Input: um so basically we need to uh ship the beta on friday
+        Output: We need to ship the beta on Friday.
+
+        Input: file it under watchouts slash insights and please don't slash and \
+        burn the old notes
+        Output: File it under watchouts/insights and please don't slash and burn \
+        the old notes.
+
+        Input: meet at four thirty with the two designers version two point one \
+        ships in three days
+        Output: Meet at 4:30 with the two designers. Version 2.1 ships in 3 days.
+
+        Input: um remember to grab three things first the uh the keys second my \
+        laptop and third um coffee
+        Output: Remember to grab three things:
         1. The keys
         2. My laptop
         3. Coffee
